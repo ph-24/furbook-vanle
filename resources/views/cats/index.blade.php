@@ -5,7 +5,7 @@
 		<a href="{{url('/')}}">Back to the overview</a>
 	@endif
 <h2>
-	All @if (isset($breed)){{ $breed->name }}@endif Cats
+	All @if (isset($breed)){{ $breed->name  }}@endif Cats
 
 	<a href="{{ url('cats/create') }}" class="btn btn-primary pull-right">
 		Add a new cat
@@ -13,12 +13,13 @@
 </h2>
 @stop
 @section('content')
-	@foreach($cats as $cat)
+	@foreach ($cats as $cat)
 	<div class="cat">
 		<a href="{{ url('cats/'.$cat->id) }}">
-			<strong>{{ $cat->name }}</strong> - {{ $cat->bread->name }}
+			<strong>{{ $cat->name }}</strong> - {{ $cat->breed->name ?? 'Khong thuoc giog meo nao ca' }}
 		</a>
 	</div>
 	@endforeach
 @stop
-@endsection
+
+
