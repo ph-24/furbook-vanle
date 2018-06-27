@@ -1,6 +1,7 @@
 <?php
 
 namespace Furbook\Http\Controllers;
+use Furbook\Http\Requests\CatRequest;
 use Validator;
 use Illuminate\Http\Request;
 use Furbook\Cat;
@@ -31,7 +32,7 @@ class CatController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\CatRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -103,11 +104,11 @@ class CatController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\CatRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,Cat $cat)
+    public function update(CatRequest $request,Cat $cat)
     {
          $cat->update($request->all());
          return redirect()->route('cat.show', $cat->id)
