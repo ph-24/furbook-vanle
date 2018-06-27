@@ -35,3 +35,7 @@ Route::get('cat/breeds/{name}', function ($name) {
 
 
 
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
