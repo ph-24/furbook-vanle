@@ -1,7 +1,7 @@
 <?php
 
 namespace Furbook\Http\Controllers;
-
+use Validator;
 use Illuminate\Http\Request;
 use Furbook\Cat;
 
@@ -36,7 +36,43 @@ class CatController extends Controller
      */
     public function store(Request $request)
     {
+       // dd($request->all());
+        //C1
+        $validator = $request->validate(
+            [
+            'name' => 'required|max:255',
+            'date_of_birth' => 'required|date_format:"Y/m/d"',
+            'breed_id' => 'required|numeric',
+            ],
+            [
+            'required' => 'Cot :attribute la bat buoc.',
+            'max' => 'Cot :attribute phai nho hon 255 ki tu.',
+            'date_format' => 'Cot :attribute dinh dang phai la Y/m/d.',
+            'numeric' => 'Cot :attribute phai la kieu so.',
+            ]);
+            //C2
+        /*$validator = Validator::make($request->all(), 
+            [
+            'name' => 'required|max:255',
+            'date_of_birth' => 'required|date_format:"Y/m/d"',
+            'breed_id' => 'required|numeric',
+            ],
+            [
+            'required' => 'Cot :attribute la bat buoc.',
+            'max' => 'Cot :attribute phai nho hon 255 ki tu.',
+            'date_format' => 'Cot :attribute dinh dang phai la Y/m/d.',
+            'numeric' => 'Cot :attribute phai la kieu so.',
+            ]
+        );
+
+        if ($validator->fails()) {
+            return redirect()
+                        ->route('cat.create')
+                        ->withErrors($validator)
+                        ->withInput();
+        }*/
        $cat = Cat::create($request->all());
+
         return redirect()->route('cat.show',$cat->id)->with('cat', $cat)
         ->withSuccess('Cat has been created.');
     }
