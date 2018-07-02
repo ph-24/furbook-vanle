@@ -19,9 +19,15 @@ class CatController extends Controller
         $this->middleware('admin')->only('destroy');      
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $cats = Cat::all();// select * from cats
+        $perpage = 5;
+        $cats = Cat::paginate($perpage);// select * from cats
+        // request with ajax
+        if ($request->ajax()) {
+            return view('partials.cat')->with('cats', $cats);
+        }
+        // request not ajax
         return view('cats/index')->with('cats', $cats);
     }
 

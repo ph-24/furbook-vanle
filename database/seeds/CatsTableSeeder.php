@@ -11,7 +11,7 @@ class CatsTableSeeder extends Seeder
      */
     public function run()
     {
-    	$currentTime = date('Y-m-d H:i:s');
+    	/*$currentTime = date('Y-m-d H:i:s');
     	DB::table('cats')->insert([
     	[
       'id' => 1,
@@ -39,7 +39,7 @@ class CatsTableSeeder extends Seeder
       'updated_at'=> $currentTime ]
   	
     ]);
-    	
-        //
+    	*/
+        factory(Furbook\Cat::class, 50)->create();
     }
 }
