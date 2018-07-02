@@ -21,20 +21,24 @@ Route::get('/', function () {
     return redirect('cat');
 
 });
-Route::resource('cat', 'CatController');
 
-Route::get('cat/breeds/{name}', function ($name) {
-	$breed = Furbook\Breed::with('cats')
-		->whereName($name)
-		->first();
-	return view('cats.index')
-		->with('breed', $breed)
-		->with('cats', $breed->cats);
+
+
+
+
+Route::group(['middleware'=>'auth'],function(){
+  Route::resource('cat', 'CatController');
+  //
+  Route::get('cat/breeds/{name}', function ($name) {
+  $breed = Furbook\Breed::with('cats')
+    ->whereName($name)
+    ->first();
+  return view('cats.index')
+    ->with('breed', $breed)
+    ->with('cats', $breed->cats);
     
 });
-
-
-
+});
 
 Auth::routes();
 

@@ -27,17 +27,17 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
     protected $cats = [
-        'is_admin' => 'boolen'];
+        'is_admin' => 'boolean'];
     public function cats(){
         return $this->hasMany('Furbook\Cat');
     }
-    public function owns('Cat $cat'){
+    public function owns(Cat $cat){
         return $this->id == $cat->user_id;
     }
     public function canEdit(Cat $cat){
         return $this->is_admin||$this->owns($cat);
     }
     public function isAdministrator(){
-        return $this->getAtribute('is_admin');
+        return $this->getAttribute('is_admin');
     }
 }

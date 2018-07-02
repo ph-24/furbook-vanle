@@ -33,7 +33,7 @@ class CatRequest extends FormRequest
         return [
             'required' => 'Cot :attribute la bat buoc.',
             'max' => 'Cot :attribute phai nho hon 255 ki tu.',
-            'date_format' => 'Cot :attribute dinh dang phai la Y/m/d.',
+            'date_format' => 'Cot :attribute dinh dang phai la Y-m-d.',
             'numeric' => 'Cot :attribute phai la kieu so.',
          ];
     }

@@ -11,7 +11,7 @@
 	    <script>
 		    $( function() {
 		    $( ".datepicker" ).datepicker({
-		    	dateFormat: 'yy/mm/dd'
+		    	dateFormat: 'yy-mm-dd'
 		    });
 		     } );
 	    </script>
@@ -24,6 +24,11 @@
 			@if (Session::has('success'))
 				<div class="alert alert-success">
 					{{ Session::get('success') }}
+				</div>
+			@endif
+			@if (Session::has('errors'))
+				<div class="alert alert-warning">
+					{{ Session::get('errors') }}
 				</div>
 			@endif
 			@yield('content')

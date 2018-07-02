@@ -5,6 +5,7 @@ use Furbook\Http\Requests\CatRequest;
 use Validator;
 use Illuminate\Http\Request;
 use Furbook\Cat;
+use Auth;
 
 class CatController extends Controller
 {
@@ -13,6 +14,11 @@ class CatController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {      
+        $this->middleware('admin')->only('destroy');      
+    }
+
     public function index()
     {
         $cats = Cat::all();// select * from cats
@@ -24,6 +30,7 @@ class CatController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function create()
     {
         return view('cats.create') ;
@@ -42,13 +49,13 @@ class CatController extends Controller
         $validator = $request->validate(
             [
             'name' => 'required|max:255',
-            'date_of_birth' => 'required|date_format:"Y/m/d"',
+            'date_of_birth' => 'required|date_format:"Y-m-d"',
             'breed_id' => 'required|numeric',
             ],
             [
             'required' => 'Cot :attribute la bat buoc.',
             'max' => 'Cot :attribute phai nho hon 255 ki tu.',
-            'date_format' => 'Cot :attribute dinh dang phai la Y/m/d.',
+            'date_format' => 'Cot :attribute dinh dang phai la Y-m-d.',
             'numeric' => 'Cot :attribute phai la kieu so.',
             ]);
             //C2
@@ -72,7 +79,9 @@ class CatController extends Controller
                         ->withErrors($validator)
                         ->withInput();
         }*/
-       $cat = Cat::create($request->all());
+        $user_id = Auth::user()->id;
+        $request->request->add(['user_id'=> $user_id]);
+        $cat = Cat::create($request->all());
 
         return redirect()->route('cat.show',$cat->id)->with('cat', $cat)
         ->withSuccess('Cat has been created.');
@@ -98,6 +107,9 @@ class CatController extends Controller
      */
     public function edit(Cat $cat)
     {
+        if (!Auth::user()->canEdit($cat)) {
+            return redirect()->route('cat.index')->withErrors('Permission denied');
+        }
         return view('cats.edit')->with('cat', $cat);
     }
 
@@ -110,6 +122,9 @@ class CatController extends Controller
      */
     public function update(CatRequest $request,Cat $cat)
     {
+        if (!Auth::user()->canEdit($cat)) {
+            return redirect()->route('cat.index')->withErrors('Permission denied');
+        }
          $cat->update($request->all());
          return redirect()->route('cat.show', $cat->id)
          ->withSuccess('Cat has been updated.');
